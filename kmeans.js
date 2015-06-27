@@ -1,52 +1,63 @@
-function kmeans(points, k, iterations) {
-  iterations = iterations || Math.pow(10,4);
+function kmeans(data, config) {
+  // defaults for iterations and number of clusters
+  var iterations = config.iterations || Math.pow(10,4);
+  var k = config.k || Math.sqrt(Math.round(data.length / 2));
+
+  // initialize point objects with data
+  points = data.map(function(vector) { return new Point(vector) });
 
   // intialize centroids randomly
   var centroids = [];
-  var bounds = getBounds(points);
+  var bounds = getBounds(points.map(function(point){ return point.location }));
   for (var i = 0; i < k; i++) {
-    centroids[i] = bounds.map(function(range, j) {
+    centroids.push(new Centroid(bounds.map(function(range, j) {
       return (Math.random() * (range.max - range.min) + range.min);
-    });
+    })));
   };
 
-  //until convergence
-  var c = points.map(function() { return 0 });
+  // update labels and centroid locations until convergence
   for (var iter = 0; iter < iterations; iter++) {
+    points.forEach(function(point) { point.updateLabel(centroids) });
+    centroids.forEach(function(centroid) { centroid.updateLocation(points) });
+  };
 
-    // for each training vector
-    points.forEach(function(x_i, i) {
-      // set c_i according to current mu_j (label for x_i)
-      var distancesSquared = centroids.map(function(mu_j) {
-        return sumOfSquareDiffs(x_i, mu_j);
-      });
-      c[i] = mindex(distancesSquared);
+  // return something with point labels, or the clusters
+  return points;
+};
+
+// objects
+function Point(location) {
+  this.location = getterSetter(location);
+  this.label = getterSetter();
+  this.updateLabel = function (centroids) {
+    var distancesSquared = centroids.map(function(centroid) {
+      return sumOfSquareDiffs(point.location, centroid.location);
     });
-
-    // for each of the k centroids
-      // set the location of the centroid using the label locations.
+    point.label = mindex(distancesSquared);
   };
 };
 
-function getBounds(points) {
-  var bounds = points[0].map(function(element) {
-    return {min: element, max: element};
-  });
+function Centroid(initialLocation) {
+  this.location = getterSetter(initialLocation);
+  this.updateLocation = function(points) {
+    //logic on updating in each iteration
+  };
+};
 
-  points.forEach(function(x_i) {
-    x_i.forEach(function(element, j) {
-      if (element < bounds[j].min) bounds[j].min = element;
-      if (element > bounds[j].max) bounds[j].max = element;
-    });
-  });
-  return bounds;
+// convenience functions
+function getterSetter(initialValue) {
+  var thingToGetSet = initialValue;
+  return function(newValue) {
+    if (typeof newValue === 'undefined') return thingToGetSet;
+    thingToGetSet = newValue;
+  };
 };
 
 function sumOfSquareDiffs(oneVector, anotherVector) {
-  var squareDiffs = oneVector.map(function(element,i) {
-    return Math.pow(element - anotherVector[i], 2);
+  var squareDiffs = oneVector.map(function(component,i) {
+    return Math.pow(component - anotherVector[i], 2);
   });
-  return Math.pow(squareDiffs.reduce(function(a, b) { return a + b }, 0), 0.5);
+  return squareDiffs.reduce(function(a, b) { return a + b }, 0);
 };
 
 function mindex(array) {
@@ -56,4 +67,17 @@ function mindex(array) {
   return array.indexOf(min);
 };
 
+function getBounds(points) {
+  var bounds = points[0].map(function(component) {
+    return {min: component, max: component};
+  });
+
+  points.forEach(function(x_i) {
+    x_i.forEach(function(component, j) {
+      if (component < bounds[j].min) bounds[j].min = component;
+      if (component > bounds[j].max) bounds[j].max = component;
+    });
+  });
+  return bounds;
+};
 
