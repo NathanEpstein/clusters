@@ -1,7 +1,7 @@
 function kmeans(data, config) {
   // defaults for iterations and number of clusters
   var config = config || {};
-  var iterations = config.iterations || Math.pow(10,4);
+  var iterations = config.iterations || Math.pow(10,3);
   var k = config.k || Math.round(Math.sqrt(data.length / 2));
 
   // initialize point objects with data
@@ -10,7 +10,7 @@ function kmeans(data, config) {
   // intialize centroids randomly
   var centroids = [];
   for (var i = 0; i < k; i++) {
-    centroids.push(new Centroid(points[i % points.length].location(), i));
+    centroids.push(new Centroid(points[Math.round(Math.random() * points.length)].location(), i));
   };
 
   // update labels and centroid locations until convergence
