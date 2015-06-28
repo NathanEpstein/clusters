@@ -1,16 +1,45 @@
+'use strict'
+
+module.exports = {
+
+  data: getterSetter([], function(arrayOfArrays) {
+    var n = arrayOfArrays[0].length;
+    return (arrayOfArrays.map(function(array) {
+      return array.length == n;
+    }).reduce(function(boolA, boolB) { return (boolA & boolB) }, true));
+  }),
+
+  clusters: function() {
+    var pointsAndCentroids = kmeans(this.data(), {k: this.k(), iterations: this.iterations() });
+    var points = pointsAndCentroids.points;
+    var centroids = pointsAndCentroids.centroids;
+
+    return centroids.map(function(centroid) {
+      return {
+        centroid: centroid.location(),
+        points: points.filter(function(point) { return point.label() == centroid.label() }).map(function(point) { return point.location() }),
+      };
+    });
+  },
+
+  k: getterSetter(undefined, function(value) { return ((value % 1 == 0) & (value > 0)) }),
+
+  iterations: getterSetter(Math.pow(10, 3), function(value) { return ((value % 1 == 0) & (value > 0)) }),
+
+};
+
 function kmeans(data, config) {
-  // defaults for iterations and number of clusters
-  var config = config || {};
-  var iterations = config.iterations || Math.pow(10,4);
+  // default k
   var k = config.k || Math.round(Math.sqrt(data.length / 2));
+  var iterations = config.iterations;
 
   // initialize point objects with data
-  points = data.map(function(vector) { return new Point(vector) });
+  var points = data.map(function(vector) { return new Point(vector) });
 
   // intialize centroids randomly
   var centroids = [];
   for (var i = 0; i < k; i++) {
-    centroids.push(new Centroid(points[i % points.length].location(), i));
+    centroids.push(new Centroid(points[Math.floor(Math.random() * points.length)].location(), i));
   };
 
   // update labels and centroid locations until convergence
@@ -19,8 +48,12 @@ function kmeans(data, config) {
     centroids.forEach(function(centroid) { centroid.updateLocation(points) });
   };
 
-  // return points
-  return points;
+  // return points and centroids
+  return {
+    points: points,
+    centroids: centroids
+  };
+
 };
 
 // objects
@@ -32,7 +65,7 @@ function Point(location) {
     var distancesSquared = centroids.map(function(centroid) {
       return sumOfSquareDiffs(self.location(), centroid.location());
     });
-    this.label(mindex(distancesSquared));
+    self.label(mindex(distancesSquared));
   };
 };
 
@@ -47,16 +80,17 @@ function Centroid(initialLocation, label) {
 };
 
 // convenience functions
-function getterSetter(initialValue) {
+function getterSetter(initialValue, validator) {
   var thingToGetSet = initialValue;
+  var isValid = validator || function(val) { return true };
   return function(newValue) {
     if (typeof newValue === 'undefined') return thingToGetSet;
-    thingToGetSet = newValue;
+    if (isValid(newValue)) thingToGetSet = newValue;
   };
 };
 
 function sumOfSquareDiffs(oneVector, anotherVector) {
-  var squareDiffs = oneVector.map(function(component,i) {
+  var squareDiffs = oneVector.map(function(component, i) {
     return Math.pow(component - anotherVector[i], 2);
   });
   return squareDiffs.reduce(function(a, b) { return a + b }, 0);
