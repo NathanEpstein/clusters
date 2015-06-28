@@ -9,13 +9,9 @@ function kmeans(data, config) {
 
   // intialize centroids randomly
   var centroids = [];
-  var bounds = getBounds(points.map(function(point){ return point.location() }));
   for (var i = 0; i < k; i++) {
-    centroids.push(new Centroid(bounds.map(function(range, j) {
-      return (Math.random() * (range.max - range.min) + range.min);
-    })));
+    centroids.push(new Centroid(points[i % points.length].location(), i));
   };
-  centroids.forEach(function(centroid, index) { centroid.label(index) });
 
   // update labels and centroid locations until convergence
   for (var iter = 0; iter < iterations; iter++) {
@@ -23,7 +19,7 @@ function kmeans(data, config) {
     centroids.forEach(function(centroid) { centroid.updateLocation(points) });
   };
 
-  // return something with point labels, or the clusters
+  // return points
   points.forEach(function(p){
     console.log(p.label(), p.location())
   })
