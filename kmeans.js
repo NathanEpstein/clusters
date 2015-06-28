@@ -20,12 +20,6 @@ function kmeans(data, config) {
   };
 
   // return points
-  points.forEach(function(p){
-    console.log(p.label(), p.location())
-  })
-  centroids.forEach(function(c){
-    console.log(c.label(),c.location())
-  })
   return points;
 };
 
