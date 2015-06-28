@@ -69,20 +69,6 @@ function mindex(array) {
   return array.indexOf(min);
 };
 
-function getBounds(points) {
-  var bounds = points[0].map(function(component) {
-    return {min: component, max: component};
-  });
-
-  points.forEach(function(x_i) {
-    x_i.forEach(function(component, j) {
-      if (component < bounds[j].min) bounds[j].min = component;
-      if (component > bounds[j].max) bounds[j].max = component;
-    });
-  });
-  return bounds;
-};
-
 function sumVectors(a, b) {
   return a.map(function(val, i) { return val + b[i] });
 };
