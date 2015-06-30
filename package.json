@@ -1,0 +1,25 @@
+{
+  "name": "kmeansjs",
+  "version": "0.0.0",
+  "description": "\"kmeans clustering in JS\"",
+  "main": "kmeans.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NathanEpstein/kmeans.js.git"
+  },
+  "keywords": [
+    "learning",
+    "clustering",
+    "kmeans",
+    "statistics"
+  ],
+  "author": "Nathan Epstein",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NathanEpstein/kmeans.js/issues"
+  },
+  "homepage": "https://github.com/NathanEpstein/kmeans.js"
+}
