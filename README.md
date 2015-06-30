@@ -26,11 +26,15 @@ clusterMaker.data([[1, 0], [0, 1], [0, 0], [-10, 10], [-9, 11], [10, 10], [11, 1
 
 console.log(clusterMaker.clusters());
 
-// { centroid: [21 / 2 , 22 / 2], points: [[10, 10], [11, 12]] },
-// { centroid: [-19 / 2, 21 / 2], points: [[-10, 10], [-9, 11]] },
-// { centroid: [1 / 3, 1 / 3], points: [[1, 0], [0, 1], [0, 0]] }
+// { centroid: [10.5 , 11], points: [[10, 10], [11, 12]] },
+// { centroid: [-9.5, 10.5], points: [[-10, 10], [-9, 11]] },
+// { centroid: [0.3333333333333333, 0.3333333333333333], points: [[1, 0], [0, 1], [0, 0]] }
 
 ```
+
+## Testing
+
+`npm test`
 
 ## License
 
