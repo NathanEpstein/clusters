@@ -1,6 +1,6 @@
 'use strict'
 
-var clusterMaker = require('../../kmeans.js');
+var clusterMaker = require('../../clusters.js');
 
 describe("data", function() {
 

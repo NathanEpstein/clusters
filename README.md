@@ -1,24 +1,24 @@
-# kmeans.js
+# Clusters
 
 <img src="./kmeans.png">
 
 ## About
 
-kmeans.js identifies clusters in data using the k-means algorithm implemented in JavaScript. For more on K-means, check out this <a href="http://cs229.stanford.edu/notes/cs229-notes7a.pdf">blog post.</a>
+Clusters identifies clusters in data using the k-means algorithm implemented in JavaScript. For more on K-means, check out this <a href="http://cs229.stanford.edu/notes/cs229-notes7a.pdf">blog post.</a>
 
 ## Installation
 
-`npm install kmeansjs --save`
+`npm install clusters --save`
 
 ## Documentation & Example
 
 ```javascript
-var clusterMaker = require('kmeansjs');
+var clusterMaker = require('clusters');
 
 //number of clusters, defaults to undefined
 clusterMaker.k(3);
 
-//number of iterations, defaults to 1000
+//number of iterations (higher number gives more time to converge), defaults to 1000
 clusterMaker.iterations(750);
 
 //data from which to identify clusters, defaults to []
