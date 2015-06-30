@@ -1,7 +1,7 @@
 {
-  "name": "kmeansjs",
+  "name": "clusters",
   "version": "0.0.0",
-  "description": "\"kmeans clustering in JS\"",
+  "description": "kmeans clustering in JS",
   "main": "kmeans.js",
   "scripts": {
     "test": "jasmine"
