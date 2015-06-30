@@ -39,7 +39,7 @@ function kmeans(data, config) {
   // intialize centroids randomly
   var centroids = [];
   for (var i = 0; i < k; i++) {
-    centroids.push(new Centroid(points[Math.floor(Math.random() * points.length)].location(), i));
+    centroids.push(new Centroid(points[i % points.length].location(), i));
   };
 
   // update labels and centroid locations until convergence
