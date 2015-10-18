@@ -1,6 +1,6 @@
 {
   "name": "clusters",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "kmeans clustering in JS",
   "main": "clusters.js",
   "scripts": {
