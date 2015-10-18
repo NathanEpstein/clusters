@@ -3,6 +3,7 @@
 module.exports = {
 
   data: getterSetter([], function(arrayOfArrays) {
+    if (typeof arrayOfArrays[0] === 'number') arrayOfArrays = arrayOfArrays.map(function(number) { return [number] });
     var n = arrayOfArrays[0].length;
     return (arrayOfArrays.map(function(array) {
       return array.length == n;
